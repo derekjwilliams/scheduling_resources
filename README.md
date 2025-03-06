@@ -145,6 +145,7 @@ classDiagram
         SAMPLE_PREP_AREA
         WHEELCHAIR_ACCESSIBLE
     }
+```
 ----
 
 # React + TypeScript + Vite
