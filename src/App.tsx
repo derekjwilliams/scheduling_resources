@@ -1,17 +1,34 @@
-import Counter from './components/Counter';
 import './App.css';
+import ClassroomScheduler from './components/ClassroomScheduler';
+import type { Classroom } from './types';
+import { sampleCourses } from './exampleData/sampleCourses';
+import { sampleInstructors } from './exampleData/sampleInstructors';
+
+const sampleClassroom: Classroom = {
+  id: 'room-101',
+  code: 'A-101',
+  type: 'CLASSROOM',
+  roomNumber: '123',
+  capacity: 30,
+  features: ['WHITEBOARD', 'PROJECTOR'],
+  building: 'Science Building',
+  floor: 1
+};
 
 function App() {
   return (
     <div className="app">
-      <h1>XState Counter Demo</h1>
-      <Counter />
+      <h1>Academic Classroom Scheduler</h1>
+      <ClassroomScheduler 
+        classroom={sampleClassroom}
+        courses={sampleCourses}
+        instructors={sampleInstructors}
+      />
     </div>
   );
 }
 
-export default App;
-// import './App.css';
+export default App;// import './App.css';
 // import { useMachine } from '@xstate/react';
 // import { createBrowserInspector } from '@statelyai/inspect';
 // import { feedbackMachine } from './machines/feedbackMachine';

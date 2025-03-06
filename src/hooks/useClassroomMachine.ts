@@ -10,7 +10,9 @@ export const useClassroom = (
   const [state, send] = useMachine(classroomMachine, {
     input: {
       classroom,
-      courses
+      courses,
+      currentSession: null,
+      upcomingSessions: []
     }
   });
 

@@ -19,10 +19,12 @@ export const ROOM_TYPES = {
 export type RoomFeature = 
   | 'WHITEBOARD'
   | 'PROJECTOR'
-  | 'SOUND_SYSTEM'
   | 'LAB_BENCHES'
   | 'CHEMICAL_HOODS'
-  | 'WHEELCHAIR_ACCESSIBLE';
+  | 'MICROSCOPES'
+  | 'GIS_STATIONS'
+  | 'SPECIMEN_DISPLAY'
+  | 'SAMPLE_PREP_AREA';
 
 export interface Classroom {
   id: string;

@@ -9,6 +9,7 @@ export interface Instructor {
   preferredRoomTypes?: RoomType[];
   maxDailySessions?: number;
   minBreakBetweenSessions?: number; // In minutes
+  specialties?: string[];
 }
 
 export interface UnavailableSlot {
