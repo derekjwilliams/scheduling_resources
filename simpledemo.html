@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+            width: 100%;
+            max-width: 1200px;
+            margin: 20px auto;
+            background: #eee;
+            padding: 4px;
+            position: relative;
+        }
+
+        .day-column {
+            background: white;
+            position: relative;
+            min-height: 1200px;
+            /* Represents 24h (50px per hour) */
+        }
+
+        .day-header {
+            text-align: center;
+            padding: 10px;
+            background: #f5f5f5;
+            position: sticky;
+            top: 0;
+        }
+
+        .course-block {
+            position: absolute;
+            background: #e3f2fd;
+            border: 1px solid #90caf9;
+            border-radius: 4px;
+            padding: 8px;
+            cursor: move;
+            overflow: hidden;
+            box-sizing: border-box;
+            transition: box-shadow 0.2s;
+        }
+
+        .course-block:hover {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        .time-marker {
+            position: absolute;
+            width: 100%;
+            border-top: 1px solid #eee;
+            font-size: 12px;
+            color: #666;
+            padding-left: 4px;
+        }
+
+        .hour-mark {
+            height: 50px;
+            /* Represents 1 hour */
+            background: repeating-linear-gradient(180deg,
+                    transparent 0,
+                    transparent 24px,
+                    #f8f8f8 25px);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="schedule-grid">
+        <!-- Days of the week -->
+        <div class="day-column">
+            <div class="day-header">Monday</div>
+            <div class="day-content hour-mark"></div>
+        </div>
+        <!-- Repeat for other days -->
+        <!-- Add Tuesday through Sunday columns here -->
+    </div>
+
+    <!-- Sample course blocks will be added here by JavaScript -->
+
+    <script>
+        const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+        const grid = document.querySelector('.schedule-grid');
+
+        // Initialize grid columns
+        days.forEach(day => {
+            const column = document.createElement('div');
+            column.className = 'day-column';
+            column.innerHTML = `
+                <div class="day-header">${day}</div>
+                <div class="day-content hour-mark"></div>
+            `;
+            grid.appendChild(column);
+        });
+
+        // Sample courses data
+        const courses = [
+            {
+                title: "Geology 101",
+                days: ['Tuesday', 'Thursday'],
+                startTime: 9.1667, // 9:10 AM in decimal hours
+                endTime: 10.4167   // 10:25 AM
+            },
+            {
+                title: "GeoPhysics 202",
+                days: ['Wednesday'],
+                startTime: 9,
+                endTime: 11.3333
+            }
+        ];
+
+        // Create course blocks
+        function createCourseBlock(course) {
+            course.days.forEach(day => {
+                const dayIndex = days.indexOf(day);
+                const dayColumn = grid.children[dayIndex];
+                const dayContent = dayColumn.querySelector('.day-content');
+
+                const block = document.createElement('div');
+                block.className = 'course-block';
+                block.textContent = course.title;
+
+                // Calculate position (50px per hour)
+                const top = course.startTime * 50;
+                const height = (course.endTime - course.startTime) * 50;
+
+                block.style.top = `${top}px`;
+                block.style.height = `${height}px`;
+                block.style.left = '2px';
+                block.style.right = '2px';
+
+                // Add drag functionality
+                makeDraggable(block, dayContent);
+
+                dayContent.appendChild(block);
+            });
+        }
+
+        // Drag and drop functionality
+        function makeDraggable(element, container) {
+            let isDragging = false;
+            let startY, startTop;
+            let startX, startLeft;
+
+            element.addEventListener('mousedown', startDrag);
+
+            function startDrag(e) {
+                isDragging = true;
+                startY = e.clientY;
+                startTop = parseFloat(element.style.top) || 0;
+                startX = e.clientX;
+                startLeft = 0; // Horizontal dragging between days
+
+                document.addEventListener('mousemove', onDrag);
+                document.addEventListener('mouseup', stopDrag);
+            }
+
+            function onDrag(e) {
+                if (!isDragging) return;
+
+                // Vertical dragging
+                const deltaY = e.clientY - startY;
+                const newTop = startTop + deltaY;
+                element.style.top = `${Math.max(0, newTop)}px`;
+
+                // Horizontal dragging between days
+                const deltaX = e.clientX - startX;
+                const newLeft = startLeft + deltaX;
+                const dayColumns = Array.from(grid.children);
+                const targetColumn = dayColumns.find(column => {
+                    const rect = column.getBoundingClientRect();
+                    return e.clientX >= rect.left && e.clientX <= rect.right;
+                });
+
+                if (targetColumn && targetColumn !== container.parentElement) {
+                    const newContainer = targetColumn.querySelector('.day-content');
+                    newContainer.appendChild(element);
+                    container = newContainer;
+                }
+            }
+
+            function stopDrag() {
+                isDragging = false;
+                document.removeEventListener('mousemove', onDrag);
+                document.removeEventListener('mouseup', stopDrag);
+
+                // Snap to 15-minute intervals
+                const top = parseFloat(element.style.top);
+                const snappedTop = Math.round(top / 12.5) * 12.5; // 50px/hour = 12.5px/15min
+                element.style.top = `${snappedTop}px`;
+            }
+        }
+
+        // Initialize courses
+        courses.forEach(createCourseBlock);
+    </script>
+</body>
+
+</html>
