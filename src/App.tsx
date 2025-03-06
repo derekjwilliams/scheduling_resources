@@ -1,35 +1,126 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import Counter from './components/Counter';
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="app">
+      <h1>XState Counter Demo</h1>
+      <Counter />
+    </div>
+  );
 }
 
-export default App
+export default App;
+// import './App.css';
+// import { useMachine } from '@xstate/react';
+// import { createBrowserInspector } from '@statelyai/inspect';
+// import { feedbackMachine } from './machines/feedbackMachine';
+
+// const { inspect } = createBrowserInspector({
+//   // Comment out the line below to start the inspector
+//   // autoStart: false
+// });
+
+// function Feedback() {
+//   const [state, send] = useMachine(feedbackMachine, {
+//     inspect
+//   });
+
+//   if (state.matches('closed')) {
+//     return (
+//       <div>
+//         <em>Feedback form closed.</em>
+//         <br />
+//         <button
+//           onClick={() => {
+//             send({ type: 'restart' });
+//           }}
+//         >
+//           Provide more feedback
+//         </button>
+//       </div>
+//     );
+//   }
+
+//   return (
+//     <div className="feedback">
+//       <button
+//         className="close-button"
+//         onClick={() => {
+//           send({ type: 'close' });
+//         }}
+//       >
+//         Close
+//       </button>
+//       {state.matches('prompt') && (
+//         <div className="step">
+//           <h2>How was your experience?</h2>
+//           <button
+//             className="button"
+//             onClick={() => send({ type: 'feedback.good' })}
+//           >
+//             Good
+//           </button>
+//           <button
+//             className="button"
+//             onClick={() => send({ type: 'feedback.bad' })}
+//           >
+//             Bad
+//           </button>
+//         </div>
+//       )}
+
+//       {state.matches('thanks') && (
+//         <div className="step">
+//           <h2>Thanks for your feedback.</h2>
+//           {state.context.feedback.length > 0 && (
+//             <p>"{state.context.feedback}"</p>
+//           )}
+//         </div>
+//       )}
+
+//       {state.matches('form') && (
+//         <form
+//           className="step"
+//           onSubmit={(ev) => {
+//             ev.preventDefault();
+//             send({
+//               type: 'submit'
+//             });
+//           }}
+//         >
+//           <h2>What can we do better?</h2>
+//           <textarea
+//             name="feedback"
+//             rows={4}
+//             placeholder="So many things..."
+//             onChange={(ev) => {
+//               send({
+//                 type: 'feedback.update',
+//                 value: ev.target.value
+//               });
+//             }}
+//           />
+//           <button className="button" disabled={!state.can({ type: 'submit' })}>
+//             Submit
+//           </button>
+//           <button
+//             className="button"
+//             type="button"
+//             onClick={() => {
+//               send({ type: 'back' });
+//             }}
+//           >
+//             Back
+//           </button>
+//         </form>
+//       )}
+//     </div>
+//   );
+// }
+
+// function App() {
+//   return <Feedback />;
+// }
+
+// export default App;

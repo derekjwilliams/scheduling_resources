@@ -1,6 +1,12 @@
-import { assign, createMachine } from 'xstate';
+// machines/counterMachine.ts
+import { setup, assign } from 'xstate';
 
-export const counterMachine = createMachine({
+export const counterMachine = setup({
+  types: {
+    context: {} as { count: number },
+    events: {} as { type: 'increment' } | { type: 'decrement' }
+  }
+}).createMachine({
   id: 'counter',
   context: {
     count: 0
