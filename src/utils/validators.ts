@@ -1,4 +1,4 @@
-import { Classroom, CourseSession, ValidationResult } from "../types";
+import { Classroom, CourseSession, isTimeString, ValidationResult } from "../types";
 
 export const validateTimeSlot = (
   start: string, 
@@ -15,7 +15,7 @@ export const validateTimeSlot = (
     return { isValid: false, message: 'End time must be after start time' };
   }
   
-  return { isValid: true };
+  return { isValid: true, message: "valid" };
 };
 export interface ValidationError {
   code: string;
@@ -42,6 +42,7 @@ export const validateSessionRoom = (
   
   return {
     isValid: errors.length === 0,
-    errors
+    errors,
+    message: 'valid'
   };
 };
