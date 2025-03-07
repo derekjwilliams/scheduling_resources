@@ -60,15 +60,6 @@ classDiagram
         +string instructorId
     }
 
-    class RecurrencePattern {
-        +DayOfWeek[] daysOfWeek
-        +string startDate
-        +string endDate
-        +TimeString startTime
-        +TimeString endTime
-        +SessionType sessionType
-    }
-
     class CourseSession {
         +string id
         +string courseId
@@ -79,6 +70,15 @@ classDiagram
         +TimeString endTime
         +SessionType sessionType
         +SessionStatus status
+    }
+
+    class RecurrencePattern {
+        +DayOfWeek[] daysOfWeek
+        +string startDate
+        +string endDate
+        +TimeString startTime
+        +TimeString endTime
+        +SessionType sessionType
     }
 
     class Instructor {
