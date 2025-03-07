@@ -97,10 +97,10 @@ classDiagram
     }
 
     Classroom "1" --> "0..*" CourseSession : hosts
-    Course "1" --> "0..*" CourseSchedule : has
-    CourseSchedule "1" --> "1" RecurrencePattern : defines
-    CourseSchedule "1" --> "0..*" CourseSession : generates
     Instructor "1" --> "0..*" CourseSession : teaches
+    Course "1" --> "0..*" CourseSchedule : has
+    CourseSchedule "1" --> "0..*" CourseSession : generates
+    CourseSchedule "1" --> "1" RecurrencePattern : defines
     CourseSession "1" --> "1" SessionType : uses
     RecurrencePattern "1" --> "1..*" DayOfWeek : specifies
 
