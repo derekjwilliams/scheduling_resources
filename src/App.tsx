@@ -1,29 +1,24 @@
 import './App.css';
-import ClassroomScheduler from './components/ClassroomScheduler';
-import type { Classroom } from './types';
+// import ClassroomScheduler from './components/ClassroomScheduler';
+import ClassroomScheduler from './components/ClassroomScheduler'
+import { sampleClassrooms } from './exampleData/sampleClassrooms';
 import { sampleCourses } from './exampleData/sampleCourses';
 import { sampleInstructors } from './exampleData/sampleInstructors';
 
-const sampleClassroom: Classroom = {
-  id: 'room-101',
-  code: 'A-101',
-  type: 'CLASSROOM',
-  roomNumber: '123',
-  capacity: 30,
-  features: ['WHITEBOARD', 'PROJECTOR'],
-  building: 'Science Building',
-  floor: 1
-};
+
 
 function App() {
   return (
     <div className="app">
-      <h1>Academic Classroom Scheduler</h1>
-      <ClassroomScheduler 
-        classroom={sampleClassroom}
-        courses={sampleCourses}
-        instructors={sampleInstructors}
-      />
+      <h1>Geology Department Scheduler</h1>
+      {sampleClassrooms.map(classroom => (
+        <ClassroomScheduler
+          key={classroom.id}
+          classroom={classroom}
+          courses={sampleCourses}
+          instructors={sampleInstructors}
+        />
+      ))}
     </div>
   );
 }

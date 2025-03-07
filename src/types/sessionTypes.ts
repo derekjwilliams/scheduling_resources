@@ -3,13 +3,18 @@ export type SessionType =
   | 'LAB'
   | 'SEMINAR'
   | 'EXAM'
-  | 'DISCUSSION';
+  | 'DISCUSSION'
+  | 'FIELD_TRIP'
 
 export const SESSION_TYPES = {
   LECTURE: 'LECTURE',
   LAB: 'LAB',
   SEMINAR: 'SEMINAR',
   EXAM: 'EXAM',
-  DISCUSSION: 'DISCUSSION'
+  DISCUSSION: 'DISCUSSION',
+  FIELD_TRIP: 'FIELD_TRIP',
 } as const;
+
+export const isSessionType = (value: string): value is SessionType =>
+  Object.values(SESSION_TYPES).includes(value as SessionType);
 

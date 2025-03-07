@@ -6,7 +6,7 @@ export interface CourseSchedule {
   pattern: RecurrencePattern;
   // timeSlots: RecurringTimeSlot[];
   excludedDates: string[]; // ISO dates
-  validFrom: string; // ISO date
-  validUntil: string; // ISO date
+  //validFrom: string; // ISO date
+  //validUntil: string; // ISO date
   sessionType?: SessionType; // If schedule is type-specific
 }

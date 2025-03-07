@@ -1,6 +1,6 @@
 // src/machines/classroomMachine.ts
 import { setup, assign } from 'xstate';
-import type { Classroom, Course, CourseSession } from '../types';
+import type { Classroom, Course, CourseSchedule, CourseSession } from '../types';
 import { validateTimeSlot } from '../utils/validators';
 
 interface MachineInput {
@@ -22,7 +22,12 @@ type ClassroomEvent =
   | { type: 'schedule.session'; session: CourseSession }
   | { type: 'cancel.session'; sessionId: string }
   | { type: 'session.start' }
-  | { type: 'session.end' };
+  | { type: 'session.end' }
+  | {
+      type: 'schedule.recurring';
+      schedule: CourseSchedule;
+      sessions: CourseSession[];
+    };
 
 export const classroomMachine = setup({
   types: {
@@ -31,6 +36,23 @@ export const classroomMachine = setup({
     input: {} as MachineInput
   },
   actions: {
+    addRecurringSessions: assign({
+      upcomingSessions: ({ context, event }) => {
+        if (event.type !== 'schedule.recurring') return context.upcomingSessions;
+        return [...context.upcomingSessions, ...event.sessions];
+      },
+      courses: ({ context, event }) => {
+        if (event.type !== 'schedule.recurring') return context.courses;
+        return context.courses.map(course => 
+          course.id === event.schedule.courseId
+            ? {
+                ...course,
+                schedules: [...course.schedules, event.schedule]
+              }
+            : course
+        );
+      }
+    }),
     addUpcomingSession: assign({
       upcomingSessions: ({ context, event }) => {
         if (event.type !== 'schedule.session') return context.upcomingSessions;
@@ -94,6 +116,9 @@ export const classroomMachine = setup({
         'schedule.session': {
           guard: 'isValidSession',
           actions: 'addUpcomingSession'
+        },
+        'schedule.recurring': {
+          actions: 'addRecurringSessions'
         }
       }
     },

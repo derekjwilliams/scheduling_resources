@@ -24,11 +24,12 @@ export type RoomFeature =
   | 'MICROSCOPES'
   | 'GIS_STATIONS'
   | 'SPECIMEN_DISPLAY'
-  | 'SAMPLE_PREP_AREA';
+  | 'SAMPLE_PREP_AREA' 
+  | 'WHEELCHAIR_ACCESSIBLE' 
+  | 'SOUND_SYSTEM'
 
 export interface Classroom {
   id: string;
-  roomNumber: string;
   availableSessionTypes?: SessionType[]; 
   code: string;
   type: RoomType;

@@ -1,5 +1,5 @@
 // src/data/sampleCourses.ts
-import type { Course, RecurringTimeSlot } from '../types';
+import type { Course,  } from '../types';
 
 export const sampleCourses: Course[] = [
   {
