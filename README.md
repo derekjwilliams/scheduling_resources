@@ -32,81 +32,28 @@ Current kinds of Sessions are
 classDiagram
     direction LR
     
-    class Classroom {
-        +string id
-        +string code
-        +RoomType type
-        +number capacity
-        +RoomFeature[] features
-        +string building
-        +number floor
-        +Coordinate? coordinates
+    %% Enumerations
+    class RoomType {
+        <<enum>>
+        CLASSROOM
+        LABORATORY
+        AUDITORIUM
+        CONFERENCE_ROOM
+        STUDIO
     }
-
-    class Course {
-        +string id
-        +string code
-        +string title
-        +RoomFeature[] requiredFeatures
-        +number minimumCapacity
-        +string[] preferredInstructors
-        +CourseSchedule[] schedules
+    
+    class SessionType {
+        <<enum>>
+        LECTURE
+        LAB
+        SEMINAR
+        EXAM
+        DISCUSSION
+        FIELD_TRIP
     }
-
-    class CourseSchedule {
-        +string id
-        +RecurrencePattern pattern
-        +string[] excludedDates
-        +string instructorId
-    }
-
-    class CourseSession {
-        +string id
-        +string courseId
-        +string scheduleId
-        +string instructorId
-        +string date
-        +TimeString startTime
-        +TimeString endTime
-        +SessionType sessionType
-        +SessionStatus status
-    }
-
-    class RecurrencePattern {
-        +DayOfWeek[] daysOfWeek
-        +string startDate
-        +string endDate
-        +TimeString startTime
-        +TimeString endTime
-        +SessionType sessionType
-    }
-
-    class Instructor {
-        +string id
-        +string name
-        +UnavailableSlot[] unavailableTimes
-        +number maxWeeklyHours
-        +RoomType[] preferredRoomTypes
-        +string[] specialties
-    }
-
-    class UnavailableSlot {
-        +DayOfWeek day
-        +TimeString startTime
-        +TimeString endTime
-    }
-
-    Classroom "1" --> "0..*" CourseSession : hosts
-    Instructor "1" --> "0..*" CourseSession : teaches
-    Course "1" --> "0..*" CourseSchedule : has
-    CourseSchedule "1" --> "0..*" CourseSession : generates
-    CourseSchedule "1" --> "1" RecurrencePattern : defines
-    CourseSession "1" --> "1" SessionType : uses
-    RecurrencePattern "1" --> "1..*" DayOfWeek : specifies
-
-    %% Enums
+    
     class DayOfWeek {
-        <<enumeration>>
+        <<enum>>
         MONDAY
         TUESDAY
         WEDNESDAY
@@ -116,25 +63,91 @@ classDiagram
         SUNDAY
     }
 
-    class SessionType {
-        <<enumeration>>
-        LECTURE
-        LAB
-        SEMINAR
-        EXAM
+    %% Core Entities
+    class Classroom {
+        +id: string
+        +code: string
+        +type: RoomType
+        +capacity: number
+        +features: RoomFeature[]
+        +building: string
+        +floor: number
+        +coordinates?: Coordinate
     }
 
-    class RoomType {
-        <<enumeration>>
-        CLASSROOM
-        LABORATORY
-        AUDITORIUM
-        CONFERENCE_ROOM
-        STUDIO
+    class Course {
+        +id: string
+        +code: string
+        +title: string
+        +requiredFeatures: RoomFeature[]
+        +minimumCapacity: number
+        +preferredInstructors: string[]
+        +schedules: CourseSchedule[]
     }
 
+    class Instructor {
+        +id: string
+        +name: string
+        +unavailableTimes: UnavailableSlot[]
+        +maxWeeklyHours: number
+        +preferredRoomTypes?: RoomType[]
+        +maxDailySessions?: number
+        +minBreakBetweenSessions?: number
+        +specialties?: string[]
+    }
+
+    %% Scheduling Components
+    class CourseSession {
+        +startsAt: Date
+        +endsAt: Date
+    }
+
+    class CourseSchedule {
+        +id: string
+        +courseId: string
+        +pattern: RecurrencePattern
+        +excludedDates: string[]
+        +sessionType?: SessionType
+    }
+
+    class RecurrencePattern {
+        +timeSlots: RecurrenceTimeSlot[]
+        +startDate: string
+        +endDate: string
+        +frequency: RecurrenceFrequency
+        +sessionType: SessionType
+        +instructorId: string
+        +courseId: string
+    }
+
+    %% Supporting Types
+    class Coordinate {
+        +building: string
+        +floor: number
+        +x: number
+        +y: number
+    }
+
+    class UnavailableSlot {
+        +day: DayOfWeek
+        +startTime: TimeString
+        +endTime: TimeString
+    }
+
+    class RecurrenceTimeSlot {
+        +dayOfWeek: DayOfWeek
+        +startTime: TimeString
+        +endTime: TimeString
+    }
+
+    class AcademicTerm {
+        +id: string
+        +name: string
+        +startDate: string
+        +endDate: string
+    }
     class RoomFeature {
-        <<enumeration>>
+        <<enum>>
         WHITEBOARD
         PROJECTOR
         LAB_BENCHES
@@ -144,62 +157,32 @@ classDiagram
         SPECIMEN_DISPLAY
         SAMPLE_PREP_AREA
         WHEELCHAIR_ACCESSIBLE
+        SOUND_SYSTEM
     }
-```
-----
 
-# React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+    %% Relationships
+    Classroom --> RoomType: «enum» type
+    Classroom --> RoomFeature: «enum» features *
+    Classroom --> Coordinate: coordinates?
 
-Currently, two official plugins are available:
+    Course --> RoomFeature: «enum» requiredFeatures *
+    Course --> CourseSchedule: schedules *
+    Course --> Instructor: preferredInstructors ~
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+    CourseSession --|> CourseSessionData
+    CourseSession --> Classroom: assigned via classroomId
+    CourseSession --> SessionType: «enum» sessionType
 
-## Expanding the ESLint configuration
+    CourseSchedule --> RecurrencePattern: pattern
+    CourseSchedule --> AcademicTerm: term dates
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+    RecurrencePattern --> RecurrenceTimeSlot: timeSlots *
+    RecurrencePattern --> SessionType: «enum» sessionType
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+    Instructor --> UnavailableSlot: unavailableTimes *
+    Instructor --> RoomType: «enum» preferredRoomTypes ~
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+    AcademicTerm --> CourseSchedule: defines scheduling boundaries
 ```
 # scheduling_resources

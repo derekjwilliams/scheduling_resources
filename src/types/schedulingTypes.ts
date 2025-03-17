@@ -1,4 +1,4 @@
-// schedulingTypes.ts
+// types/schedulingTypes.ts
 import type { TimeString } from './timeTypes';
 import type { RoomFeature } from './roomTypes'; // Classroom not needed here
 import { SESSION_TYPES, SessionType } from './sessionTypes';
@@ -168,14 +168,3 @@ export function toSessionDTO(session: CourseSession): CourseSessionData {
 export function fromSessionDTO(dto: CourseSessionData): CourseSession {
   return createCourseSession(dto);
 }
-// export interface CourseSession {
-//   id: string;
-//   scheduleId: string; // Links to CourseSchedule
-//   instructorId: string;
-//   classroomId?: string;
-//   date: string; // ISO date
-//   startTime: TimeString;
-//   endTime: TimeString;
-//   sessionType: SessionType;
-//   status: 'SCHEDULED' | 'CANCELLED' | 'RESCHEDULED';
-// }

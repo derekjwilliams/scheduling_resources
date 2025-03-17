@@ -1,36 +1,48 @@
 import './App.css';
-// import ClassroomScheduler from './components/ClassroomScheduler';
-import ClassroomScheduler from './components/ClassroomScheduler'
-import { sampleClassrooms } from './exampleData/sampleClassrooms';
-import { sampleCourses } from './exampleData/sampleCourses';
-import { sampleInstructors } from './exampleData/sampleInstructors';
-
-
+import { Feedback } from './components/Feedback';
 
 function App() {
-  return (
-    <div className="app">
-      <h1>Geology Department Scheduler</h1>
-      {sampleClassrooms.map(classroom => (
-        <ClassroomScheduler
-          key={classroom.id}
-          classroom={classroom}
-          courses={sampleCourses}
-          instructors={sampleInstructors}
-        />
-      ))}
-    </div>
-  );
+  return <Feedback />;
 }
 
-export default App;// import './App.css';
+export default App;
+// import { createBrowserInspector } from '@statelyai/inspect';
+// import { RoomScheduler } from './components/roomScheduler';
+// import ClassroomScheduler from './components/ClassroomScheduler';
+// import { RoomProvider } from './contexts/RoomContext';
+// import { sampleClassrooms } from './exampleData/sampleClassrooms';
+// import { sampleCourses } from './exampleData/sampleCourses';
+// import { sampleInstructors } from './exampleData/sampleInstructors';
+// const { inspect } = createBrowserInspector({
+  // Comment out the line below to start the inspector
+  // autoStart: false
+// });
+
+// function App() {
+//   return (
+//     <div className="app">
+//       <h1>Geology Department Scheduler</h1>
+//       <RoomProvider>
+//         <RoomScheduler />
+//       </RoomProvider>
+//       {/* {sampleClassrooms.map(classroom => (
+//         <ClassroomScheduler
+//           key={classroom.id}
+//           classroom={classroom}
+//           courses={sampleCourses}
+//           instructors={sampleInstructors}
+//         />
+//       ))} */}
+//     </div>
+//   );
+// }
+
+// export default App;// import './App.css';
 // import { useMachine } from '@xstate/react';
 // import { createBrowserInspector } from '@statelyai/inspect';
 // import { feedbackMachine } from './machines/feedbackMachine';
 
 // const { inspect } = createBrowserInspector({
-//   // Comment out the line below to start the inspector
-//   // autoStart: false
 // });
 
 // function Feedback() {

@@ -1,3 +1,4 @@
+// types/userTypes.ts
 import { RoomType } from './roomTypes';
 import type { DayOfWeek, TimeString } from './timeTypes';
 

@@ -1,3 +1,5 @@
+// types/timeTypes.ts
+
 export type DayOfWeek = 
   | 'MONDAY' 
   | 'TUESDAY' 

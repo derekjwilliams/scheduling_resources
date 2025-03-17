@@ -1,3 +1,4 @@
+// types/sessionTypes.ts
 export type SessionType = 
   | 'LECTURE'
   | 'LAB'

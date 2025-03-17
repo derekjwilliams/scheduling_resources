@@ -1,3 +1,5 @@
+// types/utilityTypes.ts
+
 import { ValidationError } from "../utils/validators";
 
 export interface Coordinate {

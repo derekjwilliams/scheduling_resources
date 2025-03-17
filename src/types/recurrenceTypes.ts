@@ -1,4 +1,5 @@
-// src/types/recurrenceTypes.ts
+// types/recurrenceTypes.ts
+
 import { SessionType } from "./sessionTypes";
 import { DayOfWeek, TimeString } from "./timeTypes";
 
