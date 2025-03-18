@@ -1,0 +1,21 @@
+BroadcastEvent: An event broadcast via radio, television, or digital stream.
+BusinessEvent: Event involving business audience.
+ChildrensEvent: Event intended for children.
+CourseInstance: An instance of a course which is offered at a specific time and place or through specific media.
+DanceEvent: Event focused on dancing, such as a ballet performance, discotheque, or social dance.
+DeliveryEvent: An event related to the delivery of an item.
+EducationEvent: Event related to education or training.
+ExhibitionEvent: An event displaying items for public viewing.
+Festival: A series of cultural events, often occurring annually and celebrating a particular theme or purpose.
+FoodEvent: A food-related event.
+LiteraryEvent: Event focused on literary works such as readings, discussions, or book signings.
+Meeting: A meeting, conference, or convention.
+MovieEvent: A screening of a movie. (Note: While ScreeningEvent is often used and well-understood, MovieEvent is also listed as a subtype).
+MusicEvent: Event focused on music performance and listening.
+PublicationEvent: A publication event, e.g., a book launch.
+SaleEvent: An event offering discounts on products or services.
+ScreeningEvent: A showing of a movie, usually in a movie theater or cinema.
+SocialEvent: A social gathering.
+SportsEvent: Event involving sports.
+TheaterEvent: Event focused on a theatrical performance.
+VisualArtsEvent: Event focused on visual arts, such as an exhibition opening.
